@@ -1,11 +1,13 @@
 package pme123.zio.examples.persistence
 
+import cats.data.NonEmptyList
 import cats.effect.Blocker
 import doobie.h2.H2Transactor
 import doobie.implicits._
 import doobie.util.query.Query0
 import doobie.util.transactor.Transactor
 import doobie.util.update.Update0
+import org.http4s.Query
 import pme123.zio.examples.configuration.DbConfig
 import zio._
 import zio.interop.catz._
@@ -21,6 +23,8 @@ object Persistence {
 
   trait Service[R] {
     val createTable: RIO[R, Unit]
+
+    def all(): RIO[R, Seq[User]]
 
     def get(id: Int): RIO[R, User]
 
@@ -65,6 +69,14 @@ object Persistence {
           .transact(tnx)
           .unit
           .orDie
+
+      final def all(): Task[Seq[User]] =
+        SQL
+          .all()
+          .nel
+          .transact(tnx)
+          .foldM(err => Task.fail(err), users => Task.succeed(users.toList))
+
     }
 
     object SQL {
@@ -82,6 +94,9 @@ object Persistence {
 
       def delete(id: Int): Update0 =
         sql"""DELETE FROM USERS WHERE ID = $id""".update
+
+      def all(): Query0[User] =
+        sql"""SELECT * FROM USERS""".query[User]
     }
 
   }

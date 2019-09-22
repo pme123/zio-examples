@@ -9,6 +9,7 @@ package object persistence extends Persistence.Service[Persistence]{
 
   final val createTable: RIO[Persistence, Unit] = ZIO.accessM(_.persistence.createTable)
 
+  final def all(): RIO[Persistence, Seq[User]] = ZIO.accessM(_.persistence.all())
   final def get(id: Int): RIO[Persistence, User] = ZIO.accessM(_.persistence.get(id))
 
   final def create(user: User): RIO[Persistence, User] = ZIO.accessM(_.persistence.create(user))
