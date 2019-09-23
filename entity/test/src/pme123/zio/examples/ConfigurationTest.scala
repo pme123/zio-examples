@@ -3,17 +3,10 @@ package pme123.zio.examples
 import org.scalatest.{Matchers, WordSpec}
 import pme123.zio.examples.configuration.Configuration._
 import pme123.zio.examples.configuration._
-import zio.{DefaultRuntime, Ref, Task}
+import zio.{DefaultRuntime, Ref}
 
 
 class ConfigurationTest extends WordSpec with Matchers {
-
-  case class Test(ref: Ref[Config]) extends Configuration {
-    val config: Service[Any] = new Service[Any] {
-
-      val load: Task[Config] = ref.get
-    }
-  }
 
   "The configuration" should {
     val configs = Config(

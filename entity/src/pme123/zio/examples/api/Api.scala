@@ -10,7 +10,7 @@ import zio.RIO
 import zio.interop.catz._
 
 
-final case class Api[R <: Persistence] (rootUri: String){
+final case class Api[R <: Persistence] (){
   type UserTask[A] = RIO[R, A]
   val dsl: Http4sDsl[UserTask] = Http4sDsl[UserTask]
 

@@ -1,6 +1,6 @@
 package pme123.zio.examples.console
 
-import zio.{RIO, UIO}
+import zio.{RIO, Ref, UIO}
 
 
 trait Console extends Serializable {
@@ -26,4 +26,14 @@ object Console {
   }
 
   object Live extends Live
+
+  case class Test(ref: Ref[Vector[String]]) extends Console {
+    override val console: Console.Service[Any] = new Console.Service[Any] {
+      final def println(line: String): UIO[Unit] =
+        ref.update(_ :+ line).unit
+
+      final val readLine: UIO[String] =
+        UIO("Pascal")
+    }
+  }
 }

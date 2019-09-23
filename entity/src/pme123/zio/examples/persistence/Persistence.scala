@@ -122,5 +122,28 @@ object Persistence {
 
     Managed(res)
   }
+
+  trait Test
+    extends Persistence {
+
+    def users: Ref[Vector[User]]
+
+    override val persistence: Service[Any] = new Service[Any] {
+      val createTable: Task[Unit] =
+        Ref.make(Vector.empty[User]).unit
+
+      def get(id: Int): Task[User] =
+        users.get.flatMap(users => Task.require(UserNotFound(id))(
+          Task.succeed(users.find(_.id == id))))
+
+      def create(user: User): Task[User] =
+        users.update(_ :+ user).map(_ => user)
+
+      def delete(id: Int): Task[Unit] =
+        users.update(users => users.filterNot(_.id == id)).unit
+
+      def all(): RIO[Any, Seq[User]] = users.get
+    }
+  }
 }
 

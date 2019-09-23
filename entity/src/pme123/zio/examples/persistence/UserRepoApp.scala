@@ -24,8 +24,7 @@ object UserRepoApp
       blockingEC
     )
     server = ZIO.runtime[Persistence].flatMap { implicit rts =>
-      createTable *>
-        createAndPersist
+      createTable *> createAndPersist
     }
     program <- transactorR.use { transactor =>
       server.provideSome[Environment] { _ =>

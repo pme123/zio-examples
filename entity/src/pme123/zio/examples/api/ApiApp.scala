@@ -31,15 +31,14 @@ object ApiApp extends App {
       Platform.executor.asEC,
       blockingEC
     )
-
     httpApp = Router[AppTask](
-      "/users" -> Api(s"${conf.api.endpoint}/users").routes
+      "/users" -> Api().routes
     ).orNotFound
 
     server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
       persistence.createTable *>
         BlazeServerBuilder[AppTask]
-          .bindHttp(conf.api.port, "0.0.0.0")
+          .bindHttp(conf.api.port, conf.api.endpoint)
           .withHttpApp(CORS(httpApp))
           .serve
           .compile[AppTask, AppTask, ExitCode]
