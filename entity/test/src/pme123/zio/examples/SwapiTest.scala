@@ -17,8 +17,8 @@ class SwapiTest
           luke <- people(1).provide(Test(peopleRef))
         } yield luke)
           .fold(
-            _=> fail("No exception epected"),
-            luke => luke shouldBe(People())
+            _ => fail("No exception epected"),
+            luke => luke shouldBe (People())
           )
       )
     }
@@ -29,8 +29,7 @@ class SwapiTest
           _ <- people(2).provide(Test(peopleRef))
         } yield ())
           .fold(
-            err =>
-              err shouldBe ServiceException("No People with id 2"),
+            err => err shouldBe ServiceException("No People with id 2"),
             _ => fail("line above should fail")
           )
       )

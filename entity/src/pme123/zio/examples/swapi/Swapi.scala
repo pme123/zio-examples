@@ -5,7 +5,7 @@ import com.softwaremill.sttp.asynchttpclient.zio.AsyncHttpClientZioBackend
 import com.softwaremill.sttp.circe._
 import io.circe.generic.auto._
 import pme123.zio.examples.configuration.SwapiConfig
-import zio.{RIO, Ref, Task}
+import zio.{IO, RIO, Ref, Task, ZIO}
 
 
 trait Swapi extends Serializable {
@@ -15,7 +15,7 @@ trait Swapi extends Serializable {
 object Swapi {
 
   trait Service[R] {
-    def people(id:Int): RIO[R, People]
+    def people(id: Int): RIO[R, People]
   }
 
   trait Live extends Swapi {
@@ -29,17 +29,16 @@ object Swapi {
 
     override val swapi: Service[Any] = new Service[Any] {
 
-      final def people(id:Int): Task[People] = {
+      final def people(id: Int): Task[People] = {
         sttp
           .get(uri"""$url/people/$id/""")
           .response(asJson[People])
           .send()
           .map(_.body)
-          .map {
-            case Left(msg) =>
-              throw ServiceException(msg)
-            case Right(Left(err)) => throw ServiceException(err.message)
-            case Right(Right(value)) => value
+          .flatMap {
+            case Left(msg) => IO.fail(ServiceException(msg))
+            case Right(Left(err)) => IO.fail(DeserializeException(err.message))
+            case Right(Right(value)) => ZIO.effectTotal(value)
           }
       }
 
@@ -49,14 +48,15 @@ object Swapi {
   case class Test(ref: Ref[Vector[People]]) extends Swapi {
     override val swapi: Swapi.Service[Any] = new Swapi.Service[Any] {
       def people(id: Int): RIO[Any, People] =
-        for{
+        for {
           peoples <- ref.get
-          maybePeople = peoples.find(_.url.contains(s"/people/$id"))
-        }yield maybePeople match {
-          case None =>
-            throw ServiceException(s"No People with id $id")
-          case Some(p) => p
-        }
+          result <- peoples.find(_.url.contains(s"/people/$id")) match {
+            case None =>
+              IO.fail(ServiceException(s"No People with id $id"))
+            case Some(p) => ZIO.effectTotal(p)
+          }
+        } yield result
     }
   }
+
 }
