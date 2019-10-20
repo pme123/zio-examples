@@ -11,7 +11,9 @@ class ConfigurationTest extends WordSpec with Matchers {
   "The configuration" should {
     val configs = Config(
       ApiConfig("localhost", 9999),
-      DbConfig("localhost", "sa", "myPassword"))
+      DbConfig("localhost", "sa", "myPassword"),
+      SwapiConfig("https://swapi.co/api")
+    )
 
     "be loaded" in {
       new DefaultRuntime {}.unsafeRun(

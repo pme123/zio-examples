@@ -10,7 +10,7 @@ package object configuration extends Configuration.Service[Configuration] {
   final val load: RIO[Configuration, Config] =
     ZIO.accessM(_.config.load)
 
-  case class Config(api: ApiConfig, dbConfig: DbConfig) {
+  case class Config(api: ApiConfig, dbConfig: DbConfig, swapi: SwapiConfig) {
     def print: String =
       copy(dbConfig = dbConfig.printed).toString
   }
@@ -21,6 +21,8 @@ package object configuration extends Configuration.Service[Configuration] {
     def printed: DbConfig =
       copy(password = "*" * password.length )
   }
+
+  case class SwapiConfig(url: String)
 
 }
 

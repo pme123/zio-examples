@@ -1,13 +1,11 @@
 package pme123.zio.examples.persistence
 
-import cats.data.NonEmptyList
 import cats.effect.Blocker
 import doobie.h2.H2Transactor
 import doobie.implicits._
 import doobie.util.query.Query0
 import doobie.util.transactor.Transactor
 import doobie.util.update.Update0
-import org.http4s.Query
 import pme123.zio.examples.configuration.DbConfig
 import zio._
 import zio.interop.catz._

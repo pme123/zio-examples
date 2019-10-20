@@ -4,7 +4,7 @@ import zio.{RIO, ZIO}
 
 package object console extends Console.Service[Console] {
 
-  final val configService: ZIO[Console, Nothing, Console.Service[Any]] =
+  final val consoleService: ZIO[Console, Nothing, Console.Service[Any]] =
     ZIO.access(_.console)
 
   final def println(line: String): RIO[Console, Unit] =

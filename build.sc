@@ -32,7 +32,7 @@ object entity extends ScalaModule {
       ivy"com.github.pureconfig::pureconfig:${version.pureconfig}",
       ivy"com.softwaremill.sttp::core:${version.sttp}",
       ivy"com.softwaremill.sttp::async-http-client-backend-zio:${version.sttp}",
-      //    ivy"com.softwaremill.sttp::circe::${version.sttp}",
+      ivy"com.softwaremill.sttp::circe::${version.sttp}",
       ivy"dev.zio::zio:${version.zio}",
       ivy"dev.zio::zio-streams:${version.zio}",
       ivy"dev.zio::zio-interop-cats:${version.zioCats}",
