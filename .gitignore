@@ -3,3 +3,6 @@
 /out
 /bot.token
 /.idea_modules/
+/.bloop/
+/.metals/
+/.vscode/

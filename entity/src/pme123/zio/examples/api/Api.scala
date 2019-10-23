@@ -18,10 +18,10 @@ final case class Api[R <: Persistence] (){
 
   def routes: HttpRoutes[UserTask] =
     HttpRoutes.of[UserTask] {
-      case GET -> Root =>
-        all().foldM(_ => NotFound(), Ok(_))
       case GET -> Root / IntVar(id) =>
         get(id).foldM(_ => NotFound(), Ok(_))
+      case GET -> Root =>
+        all().foldM(_ => NotFound(), Ok(_))
       case request@POST -> Root =>
         request.decode[User] { user =>
           Created(create(user))
