@@ -6,8 +6,8 @@ import org.http4s.server.Router
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.middleware.CORS
 import pme123.zio.examples.configuration.Configuration
+import pme123.zio.examples.console.{Console => MyConsole}
 import pme123.zio.examples.persistence.Persistence
-import pme123.zio.examples.{configuration, persistence}
 import zio.blocking.Blocking
 import zio.clock.Clock
 import zio.interop.catz._
@@ -22,8 +22,8 @@ object ApiApp extends App {
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
     program.fold(_ => 1, _ => 0)
 
-  private lazy val program = for {
-    conf <- configuration.load.provide(Configuration.Live)
+  private lazy val program: ZIO[ApiApp.Environment, Throwable, Unit] = for {
+    conf <- Configuration.>.load.provide(Configuration.Live)
     blockingEC <- blocking.blockingExecutor.map(_.asEC).provide(Blocking.Live)
 
     transactorR = Persistence.mkTransactor(
@@ -34,9 +34,11 @@ object ApiApp extends App {
     httpApp = Router[AppTask](
       "/users" -> Api().routes
     ).orNotFound
-
+    _ <- MyConsole.>.println(
+      s"The server runs on http://${conf.api.endpoint}:${conf.api.port}"
+    ).provide(MyConsole.Live)
     server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
-      persistence.createTable *>
+      Persistence.>.createTable *>
         BlazeServerBuilder[AppTask]
           .bindHttp(conf.api.port, conf.api.endpoint)
           .withHttpApp(CORS(httpApp))
@@ -54,4 +56,3 @@ object ApiApp extends App {
     }
   } yield program
 }
-

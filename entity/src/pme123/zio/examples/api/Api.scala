@@ -19,15 +19,15 @@ final case class Api[R <: Persistence] (){
   def routes: HttpRoutes[UserTask] =
     HttpRoutes.of[UserTask] {
       case GET -> Root / IntVar(id) =>
-        get(id).foldM(_ => NotFound(), Ok(_))
+        Persistence.>.get(id).foldM(_ => NotFound(), Ok(_))
       case GET -> Root =>
-        all().foldM(_ => NotFound(), Ok(_))
+        Persistence.>.all().foldM(_ => NotFound(), Ok(_))
       case request@POST -> Root =>
         request.decode[User] { user =>
-          Created(create(user))
+          Created(Persistence.>.create(user))
         }
       case DELETE -> Root / IntVar(id) =>
-        (get(id) *> delete(id)).foldM(_ => NotFound(), Ok(_))
+        (Persistence.>.get(id) *> Persistence.>.delete(id)).foldM(_ => NotFound(), Ok(_))
     }
 
   implicit def circeJsonDecoder[A](implicit decoder: Decoder[A]): EntityDecoder[UserTask, A] = jsonOf[UserTask, A]

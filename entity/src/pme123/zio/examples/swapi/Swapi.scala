@@ -18,14 +18,19 @@ object Swapi {
     def people(id: Int): RIO[R, People]
   }
 
+  object > extends Service[Swapi] {
+    final def people(id: Int): RIO[Swapi, People] =
+      ZIO.accessM(_.swapi.people(id))
+  }
+
   trait Live extends Swapi {
 
     //noinspection TypeAnnotation
     private implicit val sttpBackend = AsyncHttpClientZioBackend()
 
-    protected def config: SwapiConfig
+    protected def swapiConfig: SwapiConfig
 
-    private lazy val url = config.url
+    private lazy val url = swapiConfig.url
 
     override val swapi: Service[Any] = new Service[Any] {
 

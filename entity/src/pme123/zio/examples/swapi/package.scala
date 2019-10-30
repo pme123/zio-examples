@@ -3,11 +3,6 @@ package pme123.zio.examples
 import zio.{RIO, ZIO}
 
 package object swapi {
-  final val swapiService: ZIO[Swapi, Nothing, Swapi.Service[Any]] =
-    ZIO.access(_.swapi)
-
-  final def people(id: Int): RIO[Swapi, People] =
-    ZIO.accessM(_.swapi.people(id))
 
   case class People(
                      name: String = "Luke Skywalker",

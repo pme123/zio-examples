@@ -3,17 +3,19 @@ import pme123.zio.examples.console._
 
 import zio.{App, ZIO}
 
-object ConfigurationApp
-  extends App {
-
+object ConfigurationApp extends App {
+  type MyEnv = Configuration with Console
+  val env = new Configuration.Live with Console.Live
   def run(args: List[String]): ZIO[Environment, Nothing, Int] =
-    program.fold({error =>
-      error.printStackTrace()
-      1}, _ => 0)
+    program
+      .provide(env)
+      .fold({ error =>
+        error.printStackTrace()
+        1
+      }, _ => 0)
 
-  private lazy val program = for {
-    configs <- load.provide(Configuration.Live)
-    _ <- println(s"Config is: ${configs.print}").provide(Console.Live)
+  private lazy val program: ZIO[MyEnv, Throwable, Unit] = for {
+    configs <- Configuration.>.load
+    _ <- Console.>.println(s"Config is: ${configs.print}")
   } yield ()
 }
-

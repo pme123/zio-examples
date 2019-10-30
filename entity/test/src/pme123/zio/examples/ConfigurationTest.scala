@@ -19,7 +19,7 @@ class ConfigurationTest extends WordSpec with Matchers {
       new DefaultRuntime {}.unsafeRun(
         for {
           state <- Ref.make(configs)
-          result <- load.provide(Test(state))
+          result <- Configuration.>.load.provide(Test(state))
         } yield result
       ) shouldBe configs
     }

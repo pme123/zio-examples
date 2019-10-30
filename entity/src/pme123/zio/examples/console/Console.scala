@@ -1,6 +1,6 @@
 package pme123.zio.examples.console
 
-import zio.{RIO, Ref, UIO}
+import zio.{RIO, Ref, UIO, ZIO}
 
 
 trait Console extends Serializable {
@@ -13,6 +13,18 @@ object Console {
     def println(line: String): RIO[R, Unit]
 
     val readLine: RIO[R, String]
+  }
+
+  object > extends Service[Console] {
+
+    final val console: ZIO[Console, Nothing, Service[Any]] =
+      ZIO.access(_.console)
+
+    final def println(line: String): RIO[Console, Unit] =
+      ZIO.accessM(_.console.println(line))
+
+    final val readLine: RIO[Console, String] =
+      ZIO.accessM(_.console.readLine)
   }
 
   trait Live extends Console {

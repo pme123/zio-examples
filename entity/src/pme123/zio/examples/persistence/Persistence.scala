@@ -12,7 +12,6 @@ import zio.interop.catz._
 
 import scala.concurrent.ExecutionContext
 
-
 trait Persistence extends Serializable {
   val persistence: Persistence.Service[Any]
 }
@@ -31,6 +30,27 @@ object Persistence {
     def delete(id: Int): RIO[R, Unit]
   }
 
+  object > extends Persistence.Service[Persistence] {
+
+    final val persistenceService
+        : ZIO[Persistence, Nothing, Persistence.Service[Any]] =
+      ZIO.access(_.persistence)
+
+    final val createTable: RIO[Persistence, Unit] =
+      ZIO.accessM(_.persistence.createTable)
+
+    final def all(): RIO[Persistence, Seq[User]] =
+      ZIO.accessM(_.persistence.all())
+
+    final def get(id: Int): RIO[Persistence, User] =
+      ZIO.accessM(_.persistence.get(id))
+
+    final def create(user: User): RIO[Persistence, User] =
+      ZIO.accessM(_.persistence.create(user))
+
+    final def delete(id: Int): RIO[Persistence, Unit] =
+      ZIO.accessM(_.persistence.delete(id))
+  }
 
   trait Live extends Persistence {
 
@@ -39,7 +59,8 @@ object Persistence {
     val persistence: Service[Any] = new Service[Any] {
 
       final val createTable: Task[Unit] =
-        SQL.createTable.run.transact(tnx)
+        SQL.createTable.run
+          .transact(tnx)
           .foldM(err => Task.fail(err), _ => Task.succeed(()))
 
       final def get(id: Int): Task[User] =
@@ -49,8 +70,7 @@ object Persistence {
           .transact(tnx)
           .foldM(
             Task.fail,
-            maybeUser => Task.require(UserNotFound(id))(
-              Task.succeed(maybeUser))
+            maybeUser => Task.require(UserNotFound(id))(Task.succeed(maybeUser))
           )
 
       final def create(user: User): Task[User] =
@@ -100,10 +120,10 @@ object Persistence {
   }
 
   def mkTransactor(
-                    conf: DbConfig,
-                    connectEC: ExecutionContext,
-                    transactEC: ExecutionContext
-                  ): Managed[Throwable, H2Transactor[Task]] = {
+      conf: DbConfig,
+      connectEC: ExecutionContext,
+      transactEC: ExecutionContext
+  ): Managed[Throwable, H2Transactor[Task]] = {
     import zio.interop.catz._
 
     val xa = H2Transactor.newH2Transactor[Task](
@@ -111,7 +131,8 @@ object Persistence {
       conf.user,
       conf.password,
       connectEC,
-      Blocker.liftExecutionContext(transactEC))
+      Blocker.liftExecutionContext(transactEC)
+    )
 
     val res = xa.allocated.map {
       case (transactor, cleanupM) =>
@@ -121,8 +142,7 @@ object Persistence {
     Managed(res)
   }
 
-  trait Test
-    extends Persistence {
+  trait Test extends Persistence {
 
     def users: Ref[Vector[User]]
 
@@ -131,8 +151,10 @@ object Persistence {
         Ref.make(Vector.empty[User]).unit
 
       def get(id: Int): Task[User] =
-        users.get.flatMap(users => Task.require(UserNotFound(id))(
-          Task.succeed(users.find(_.id == id))))
+        users.get.flatMap(
+          users =>
+            Task.require(UserNotFound(id))(Task.succeed(users.find(_.id == id)))
+        )
 
       def create(user: User): Task[User] =
         users.update(_ :+ user).map(_ => user)
@@ -144,4 +166,3 @@ object Persistence {
     }
   }
 }
-

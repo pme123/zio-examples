@@ -20,10 +20,4 @@ object SchedulerApp extends App {
     _ <- putStrLn("Repeated Delay").repeat(s)
   } yield ()
 
-
-  //surpressed
-  def d(o: Option[String]): String =
-    o match {
-      case None => "none"
-    }
 }
