@@ -57,6 +57,19 @@ trait MyModule extends ScalaModule {
       Seq("org.scalatest.tools.Framework", "zio.test.sbt.ZTestFramework")
   }
 
+  override def scalacOptions =
+    defaultScalaOpts
+
+  val defaultScalaOpts = Seq(
+    "-deprecation",               // Emit warning and location for usages of deprecated APIs.
+    "-encoding", "UTF-8",         // Specify character encoding used by source files.
+    "-language:higherKinds",      // Allow higher-kinded types
+    "-language:postfixOps",       // Allows operator syntax in postfix position (deprecated since Scala 2.10)
+    "-feature",                   // Emit warning and location for usages of features that should be imported explicitly.
+  //  "-Ypartial-unification",      // Enable partial unification in type constructor inference
+    "-Xfatal-warnings"            // Fail the compilation if there are any warnings
+  )
+
 }
 
 object entity extends MyModule {
@@ -84,7 +97,8 @@ object entity extends MyModule {
 
 object macros extends MyModule {
 
-  override def scalacOptions = Seq("-Ymacro-annotations", "-Ymacro-debug-lite", "-Ypartial-unification")
+  override def scalacOptions =
+     defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
 
   override def ivyDeps = {
     Agg(

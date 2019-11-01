@@ -12,7 +12,7 @@ import zio.blocking.Blocking
 import zio.clock.Clock
 import zio.interop.catz._
 import zio._
-
+import zio.console._
 object ApiApp extends App {
 
   type AppEnvironment = Clock with Persistence
@@ -20,7 +20,10 @@ object ApiApp extends App {
   type AppTask[A] = RIO[AppEnvironment, A]
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
-    program.fold(_ => 1, _ => 0)
+    program.foldM(
+      err => putStrLn(s"Program failed: $err") *> ZIO.succeed(1),
+      _ => ZIO.succeed(0)
+    )
 
   private lazy val program: ZIO[ZEnv, Throwable, Unit] = for {
     conf <- Configuration.>.load.provide(Configuration.Live)

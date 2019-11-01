@@ -2,9 +2,8 @@ package pme123.zio.examples.timpigden
 
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
-import zio.{Task, ZIO, ZManaged}
-import zio.test.TestResult
 import zio.interop.catz._
+import zio.{Task, ZIO, ZManaged}
 
 object TestClient {
 
