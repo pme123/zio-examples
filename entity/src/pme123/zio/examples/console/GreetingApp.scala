@@ -1,10 +1,10 @@
 package pme123.zio.examples.console
 
-import zio.{App, ZIO}
+import zio._
 
 object GreetingApp extends App with Greeting {
 
-  def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program
       .provide(Console.Live)
       .fold(_ => 1, _ => 0)

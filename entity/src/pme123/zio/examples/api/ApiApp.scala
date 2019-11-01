@@ -11,7 +11,7 @@ import pme123.zio.examples.persistence.Persistence
 import zio.blocking.Blocking
 import zio.clock.Clock
 import zio.interop.catz._
-import zio.{Task, ZIO, _}
+import zio._
 
 object ApiApp extends App {
 
@@ -19,10 +19,10 @@ object ApiApp extends App {
 
   type AppTask[A] = RIO[AppEnvironment, A]
 
-  def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program.fold(_ => 1, _ => 0)
 
-  private lazy val program: ZIO[ApiApp.Environment, Throwable, Unit] = for {
+  private lazy val program: ZIO[ZEnv, Throwable, Unit] = for {
     conf <- Configuration.>.load.provide(Configuration.Live)
     blockingEC <- blocking.blockingExecutor.map(_.asEC).provide(Blocking.Live)
 
@@ -48,7 +48,7 @@ object ApiApp extends App {
     }
 
     program <- transactorR.use { transactor =>
-      server.provideSome[Environment] { _ =>
+      server.provideSome[ZEnv] { _ =>
         new Clock.Live with Persistence.Live {
           override protected def tnx: doobie.Transactor[Task] = transactor
         }

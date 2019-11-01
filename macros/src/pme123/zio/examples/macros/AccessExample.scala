@@ -2,8 +2,6 @@ package pme123.zio.examples.macros
 
 import zio.ZIO
 import zio.macros.access.accessible
-
-
 @accessible
 trait AccessExample {
   val accessExample: AccessExample.Service[Any]
@@ -11,9 +9,9 @@ trait AccessExample {
 
 object AccessExample {
   trait Service[R] {
-    def foo()                 : ZIO[R, Nothing, Unit]
-    def bar(v1: Int, v2: Int) : ZIO[R, Nothing, Int]
-    def baz(v1: Int)(v2: Int) : ZIO[R, Nothing, String]
+    def foo(): ZIO[R, Nothing, Unit]
+    def bar(v1: Int, v2: Int): ZIO[R, Nothing, Int]
+    def baz(v1: Int)(v2: Int): ZIO[R, Nothing, String]
   }
 
   trait Live extends AccessExample {
@@ -39,30 +37,3 @@ object AccessExample {
   }
   object Live extends Live
 }
-/*
-trait Live extends AccessExample {
-  final val example: Service[Console] = new Service[Console] {
-
-    import zio._
-
-    def foo(): RIO[Console, Unit] =
-      console.putStrLn("hello from foo.")
-
-    def bar(v1: Int, v2: Int): RIO[Console, Int] =
-      for {
-        _ <- console.putStrLn(s"BAR thanks for $v1 + $v2")
-        result = v1 + v2
-      } yield result
-
-    def baz(v1: Int)(v2: Int): RIO[Console, String] =
-      for {
-        _ <- console.putStrLn(s"BAZ thanks for $v1 + $v2")
-        result = v1 + v2
-      } yield s"The result is $result"
-  }
-}
-
-object Live extends Live
-
-
- */

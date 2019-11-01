@@ -1,12 +1,12 @@
 package pme123.zio.examples.configuration
 import pme123.zio.examples.console._
 
-import zio.{App, ZIO}
+import zio._
 
 object ConfigurationApp extends App {
   type MyEnv = Configuration with Console
   val env = new Configuration.Live with Console.Live
-  def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program
       .provide(env)
       .fold({ error =>

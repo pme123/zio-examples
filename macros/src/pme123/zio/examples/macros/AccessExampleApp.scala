@@ -1,6 +1,7 @@
 package pme123.zio.examples.macros
 
 import zio.{App, ZIO}
+import zio.Schedule
 
 object AccessExampleApp extends App {
 
@@ -10,10 +11,6 @@ object AccessExampleApp extends App {
         // error.printStackTrace()
         1
       }, _ => 0)
-
-  private lazy val program = for {
-    _ <- AccessExample.>.foo()
-  } yield ()
 
   val myProgram =
     for {

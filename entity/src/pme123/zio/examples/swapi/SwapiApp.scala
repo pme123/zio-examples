@@ -7,7 +7,7 @@ import zio._
 object SwapiApp
   extends App {
 
-  def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program
       .fold({ error =>
         error.printStackTrace()

@@ -4,13 +4,13 @@ import pme123.zio.examples.configuration.Configuration
 import pme123.zio.examples.console._
 import pme123.zio.examples.persistence.Persistence._
 import zio.blocking.Blocking
-import zio.{App, Task, ZIO, blocking}
+import zio._
 
 object UserRepoApp
   extends App
     with UserRepo {
 
-  def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program.fold(_ => 1, _ => 0)
 
   private lazy val program = for {
@@ -26,7 +26,7 @@ object UserRepoApp
       Persistence.>.createTable *> createAndPersist
     }
     program <- transactorR.use { transactor =>
-      server.provideSome[Environment] { _ =>
+      server.provideSome[ZEnv] { _ =>
         new Persistence.Live
           with Console.Live {
           override protected def tnx: doobie.Transactor[Task] = transactor
