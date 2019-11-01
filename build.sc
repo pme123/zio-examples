@@ -25,10 +25,10 @@ trait MyModule extends ScalaModule {
     val doobieH2 = ivy"org.tpolecat::doobie-h2:${version.doobie}"
     val http4sBlazeServer =
       ivy"org.http4s::http4s-blaze-server:${version.http4s}"
+    val http4sBlazeClient =
+      ivy"org.http4s::http4s-blaze-client:${version.http4s}"
     val http4sCirce = ivy"org.http4s::http4s-circe:${version.http4s}"
-    val http4sCore = ivy"org.http4s::http4s-core:${version.http4s}"
     val http4sDsl = ivy"org.http4s::http4s-dsl:${version.http4s}"
-    val http4sServer = ivy"org.http4s::http4s-server:${version.http4s}"
     val pureconfig =
       ivy"com.github.pureconfig::pureconfig:${version.pureconfig}"
     val sttpCore = ivy"com.softwaremill.sttp::core:${version.sttp}"
@@ -68,10 +68,9 @@ object entity extends MyModule {
       libs.doobieCore,
       libs.doobieH2,
       libs.http4sBlazeServer,
+      libs.http4sBlazeClient,
       libs.http4sCirce,
-      libs.http4sCore,
       libs.http4sDsl,
-      libs.http4sServer,
       libs.pureconfig,
       libs.sttpCore,
       libs.sttpClient,
