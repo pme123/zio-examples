@@ -9,7 +9,7 @@ import zio.{Task, ZIO}
 
 object Hello1ClientSpec extends DefaultRunnableSpec(
 
-  suite("routes suite")(
+  suite("Hello1ClientSpec routes suite")(
     testM("test get") {
       for{
         client <- ZIO.access[Client[Task]](x => x)

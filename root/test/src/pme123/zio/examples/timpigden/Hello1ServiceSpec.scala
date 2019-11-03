@@ -8,7 +8,7 @@ import zio.test.{testM, _}
 
 object Hello1ServiceSpec
     extends DefaultRunnableSpec(
-      suite("route s suites")(
+      suite("Hello1ServiceSpec routes suites")(
         testM("root request returns ok") {
           for {
             response <- Hello1Service.service.run(Request())

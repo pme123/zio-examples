@@ -10,8 +10,8 @@ import zio.test.{testM, _}
 
 object Hello3ServiceSpec
     extends DefaultRunnableSpec(
-      suite("routes suites")(
-        testM("persident is Donald") {
+      suite("Hello3ServiceSpec routes suites")(
+        testM("president is Donald") {
           for {
             response <- Hello3Service.service.run(Request(Method.GET, uri"/president"))
             body <- response.bodyAsText.compile.toVector.map(_.mkString(""))

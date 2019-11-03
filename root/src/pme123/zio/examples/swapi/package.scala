@@ -1,7 +1,5 @@
 package pme123.zio.examples
 
-import zio.{RIO, ZIO}
-
 package object swapi {
 
   case class People(

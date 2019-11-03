@@ -10,8 +10,8 @@ import zio.test.{testM, _}
 
 object Hello4ServiceSpec
     extends DefaultRunnableSpec(
-      suite("routes suites")(
-        testM("persident is Donald") {
+      suite("Hello4ServiceSpec routes suites")(
+        testM("president is Donald") {
           val req = requestWithAuth(uri = uri"/president")
           val io = (for {
             response <- hello4Service.run(req)

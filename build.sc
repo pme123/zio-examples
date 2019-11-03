@@ -72,7 +72,7 @@ trait MyModule extends ScalaModule {
 
 }
 
-object entity extends MyModule {
+object root extends MyModule {
   override def ivyDeps = {
     Agg(
       libs.cats,

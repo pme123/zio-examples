@@ -37,7 +37,7 @@ object ConfigurationTests {
 
 object ConfigurationSuites
     extends DefaultRunnableSpec(
-      suite("SwapiSuites")(
+      suite("ConfigurationSuites")(
         ConfigurationTests.testSuites,
         ConfigurationTests.liveSuites
       )

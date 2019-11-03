@@ -6,9 +6,10 @@ import pme123.zio.examples.timpigden.Middlewares.{withMiddleware, _}
 import zio.interop.catz._
 import zio.test.Assertion._
 import zio.test.{testM, _}
+
 object Hello2ServiceSpec
     extends DefaultRunnableSpec(
-      suite("route s suites")(
+      suite("Hello2ServiceSpec routes suites")(
         testM("root request returns forbidden") {
           val io = hello2Service
             .run(Request[withMiddleware.AppTask]())
