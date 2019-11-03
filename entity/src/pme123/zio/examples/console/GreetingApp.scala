@@ -2,7 +2,7 @@ package pme123.zio.examples.console
 
 import zio._
 
-object GreetingApp extends App with Greeting {
+object GreetingApp extends App {
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program
@@ -10,6 +10,6 @@ object GreetingApp extends App with Greeting {
       .fold(_ => 1, _ => 0)
 
   private lazy val program: ZIO[Console, Throwable, Unit] = for {
-    _ <- greeting
+    _ <- Greeting.greeting
   } yield ()
 }

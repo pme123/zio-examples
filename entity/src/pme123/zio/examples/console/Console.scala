@@ -40,6 +40,7 @@ object Console {
   object Live extends Live
 
   case class Test(ref: Ref[Vector[String]]) extends Console {
+
     override val console: Console.Service[Any] = new Console.Service[Any] {
       final def println(line: String): UIO[Unit] =
         ref.update(_ :+ line).unit

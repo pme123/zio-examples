@@ -4,6 +4,7 @@ import zio.RIO
 
 
 trait UserRepo {
+
   val createAndPersist: RIO[Persistence with Console, Seq[User]] =
     for {
       _ <- Persistence.>.createTable

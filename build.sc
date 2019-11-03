@@ -44,7 +44,6 @@ trait MyModule extends ScalaModule {
 
   object test extends Tests {
     override def ivyDeps = Agg(
-      ivy"org.scalatest::scalatest:${version.scalaTest}",
       ivy"dev.zio::zio-test:${version.zio}",
       ivy"dev.zio::zio-test-sbt:${version.zio}"
     )
@@ -54,7 +53,7 @@ trait MyModule extends ScalaModule {
     }
 
     def testFrameworks =
-      Seq("org.scalatest.tools.Framework", "zio.test.sbt.ZTestFramework")
+      Seq("zio.test.sbt.ZTestFramework")
   }
 
   override def scalacOptions =
@@ -65,9 +64,9 @@ trait MyModule extends ScalaModule {
     "-encoding", "UTF-8",         // Specify character encoding used by source files.
     "-language:higherKinds",      // Allow higher-kinded types
     "-language:postfixOps",       // Allows operator syntax in postfix position (deprecated since Scala 2.10)
-    "-feature",                   // Emit warning and location for usages of features that should be imported explicitly.
+    "-feature"                    // Emit warning and location for usages of features that should be imported explicitly.
   //  "-Ypartial-unification",      // Enable partial unification in type constructor inference
-    "-Xfatal-warnings"            // Fail the compilation if there are any warnings
+  //  "-Xfatal-warnings"            // Fail the compilation if there are any warnings
   )
 
 }

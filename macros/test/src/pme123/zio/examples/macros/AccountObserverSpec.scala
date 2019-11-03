@@ -4,7 +4,7 @@ import zio.ZIO
 import zio.console.Console
 import zio.test.Assertion._
 import zio.test._
-import zio.test.mock.{MockConsole, MockSpec}
+import zio.test.mock._
 
 object AccountObserverSpec
     extends DefaultRunnableSpec(
@@ -12,11 +12,11 @@ object AccountObserverSpec
         val event = "MyAccessEvent"
         val app: ZIO[AccountObserver with MockConsole, Nothing, Unit] = AccountObserver.>.processEvent(event)
         val mockEnv: MockSpec[_, _, String] = (
-          MockSpec.expectIn(MockConsole.Service.putStrLn)(
+          MockSpec.expectIn(MockConsole.putStrLn)(
             equalTo(s"Got $event")
           ) *>
-            MockSpec.expectOut(MockConsole.Service.getStrLn)("42") *>
-            MockSpec.expectIn(MockConsole.Service.putStrLn)(
+            MockSpec.expectOut(MockConsole.getStrLn)("42") *>
+            MockSpec.expectIn(MockConsole.putStrLn)(
               equalTo("You entered: 42")
             )
         )

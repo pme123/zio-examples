@@ -1,14 +1,13 @@
 package pme123.zio.examples.macros
 
-import zio.{App, ZIO}
-import zio.Schedule
-
+import zio._
+import zio.console._
 object AccessExampleApp extends App {
 
-  def run(args: List[String]): ZIO[Environment, Nothing, Int] =
+  def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     myProgram
       .fold({ error =>
-        // error.printStackTrace()
+         putStrLn(s"Error: $error")
         1
       }, _ => 0)
 

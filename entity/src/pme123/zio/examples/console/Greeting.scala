@@ -10,3 +10,5 @@ trait Greeting {
       _ <- Console.>.println(s"Nice to meet you $name")
     } yield ()
 }
+
+object Greeting extends Greeting
