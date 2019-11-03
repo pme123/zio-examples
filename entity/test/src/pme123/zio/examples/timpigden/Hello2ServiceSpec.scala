@@ -1,43 +1,11 @@
 package pme123.zio.examples.timpigden
 
-import cats.data.Kleisli
 import org.http4s._
 import org.http4s.implicits._
-import org.http4s.server.Router
-import pme123.zio.examples.timpigden.Middlewares.withMiddleware
+import pme123.zio.examples.timpigden.Middlewares.{withMiddleware, _}
 import zio.interop.catz._
 import zio.test.Assertion._
 import zio.test.{testM, _}
-
-object Middlewares {
-  val withMiddleware: AuthenticationMiddleware {
-    type AppEnvironment = Authenticator
-  } = new AuthenticationMiddleware {
-    override type AppEnvironment = Authenticator
-  }
-
-  val hello2Service1: Hello2Service[Authenticator] = new Hello2Service[Authenticator]
-
-  val hello2Service: Kleisli[withMiddleware.AppTask, Request[withMiddleware.AppTask], Response[withMiddleware.AppTask]] = Router[withMiddleware.AppTask](
-    ("" -> withMiddleware.authenticationMiddleware(hello2Service1.service))
-  ).orNotFound
-
-  def authenticator: Authenticator = {
-    new Authenticator {
-      override val authenticatorService: Authenticator.Service =
-        Authenticator.friendlyAuthenticator
-    }
-  }
-
-  def requestWithAuth(
-      uri: Uri = uri"/",
-      pwd: String = "friend"
-  ): Request[withMiddleware.AppTask] = {
-    val req1 = Request[withMiddleware.AppTask](Method.GET, uri)
-    AuthenticationHeaders.addAuthentication(req1, "tim", pwd)
-  }
-}
-import pme123.zio.examples.timpigden.Middlewares._
 object Hello2ServiceSpec
     extends DefaultRunnableSpec(
       suite("route s suites")(
