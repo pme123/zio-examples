@@ -10,11 +10,11 @@ trait MyModule extends ScalaModule {
     val doobie = "0.8.0-RC1"
     val http4s = "0.21.0-M4"
     val pureconfig = "0.11.1"
+    val scalaXml = "1.2.0"
     val sttp = "1.6.3"
     val zio = "1.0.0-RC16"
     val zioMacros = "0.4.0"
     val zioCats = "2.0.0.0-RC6"
-    val scalaTest = "3.0.8"
   }
 
   object libs {
@@ -31,6 +31,7 @@ trait MyModule extends ScalaModule {
     val http4sDsl = ivy"org.http4s::http4s-dsl:${version.http4s}"
     val pureconfig =
       ivy"com.github.pureconfig::pureconfig:${version.pureconfig}"
+    val scalaXml = ivy"org.scala-lang.modules::scala-xml:${version.scalaXml}"
     val sttpCore = ivy"com.softwaremill.sttp::core:${version.sttp}"
     val sttpClient =
       ivy"com.softwaremill.sttp::async-http-client-backend-zio:${version.sttp}"
@@ -84,6 +85,7 @@ object entity extends MyModule {
       libs.http4sCirce,
       libs.http4sDsl,
       libs.pureconfig,
+      libs.scalaXml,
       libs.sttpCore,
       libs.sttpClient,
       libs.sttpCirce,
