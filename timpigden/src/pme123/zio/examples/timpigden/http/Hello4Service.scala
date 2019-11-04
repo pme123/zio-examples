@@ -1,13 +1,11 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
-import org.http4s.{AuthedRequest, AuthedRoutes, HttpRoutes, Response}
 import org.http4s.dsl.Http4sDsl
-import org.http4s.implicits._
-import pme123.zio.examples.timpigden.XmlEncoders._
-import zio.{RIO, Task}
+import org.http4s.{AuthedRequest, AuthedRoutes}
+import pme123.zio.examples.timpigden.http.Authenticator.AuthToken
+import zio.RIO
 import zio.interop.catz._
-import Authenticator.AuthToken
-import cats.data.Kleisli
+import XmlEncoders._
 
 class Hello4Service[R <: Authenticator] {
 

@@ -1,4 +1,4 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import cats.data.Kleisli
 import org.http4s._

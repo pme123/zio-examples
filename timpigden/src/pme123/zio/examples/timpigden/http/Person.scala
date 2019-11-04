@@ -1,4 +1,4 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 // Simple data type used for encoding and decoding
 case class Person(name: String, age: Int)

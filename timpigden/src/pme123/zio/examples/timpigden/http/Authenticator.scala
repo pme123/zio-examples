@@ -1,15 +1,16 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import cats.data.{Kleisli, OptionT}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.headers.Authorization
 import org.http4s.server.AuthMiddleware
 import org.http4s.{AuthedRoutes, Header, Request}
-import pme123.zio.examples.timpigden.Authenticator.{AuthToken, AuthenticationError}
+import pme123.zio.examples.timpigden.http.Authenticator.{
+  AuthToken,
+  AuthenticationError
+}
 import zio.interop.catz._
 import zio.{IO, RIO, Task, ZIO}
-
-import scala.language.higherKinds
 
 trait Authenticator { def authenticatorService: Authenticator.Service }
 
@@ -37,14 +38,19 @@ object Authenticator {
 
 }
 package object authenticator {
-  def authenticatorService: ZIO[Authenticator, AuthenticationError, Authenticator.Service] = ZIO.accessM(x => ZIO.succeed(x.authenticatorService))
+  def authenticatorService
+      : ZIO[Authenticator, AuthenticationError, Authenticator.Service] =
+    ZIO.accessM(x => ZIO.succeed(x.authenticatorService))
 }
 trait AuthenticationHeaders[R <: Authenticator] {
   type AuthHTask[T] = RIO[R, T]
 
-  private def unauthenticated = IO.succeed(Left(new Exception("bad format authentication")))
+  private def unauthenticated =
+    IO.succeed(Left(new Exception("bad format authentication")))
 
-  def getToken(req: Request[AuthHTask]) : AuthHTask[Either[Throwable, AuthToken]] = {
+  def getToken(
+      req: Request[AuthHTask]
+  ): AuthHTask[Either[Throwable, AuthToken]] = {
     val userNamePasswordOpt: Option[Array[String]] =
       for {
         auth <- req.headers.get(Authorization).map(_.value)
@@ -54,7 +60,7 @@ trait AuthenticationHeaders[R <: Authenticator] {
     val tok = userNamePasswordOpt.map { asSplit =>
       val res1 = for {
         authentic <- authenticator.authenticatorService
-        tok  <- authentic.authenticate(asSplit(0), asSplit(1))
+        tok <- authentic.authenticate(asSplit(0), asSplit(1))
       } yield tok
       res1.either
     }
@@ -70,25 +76,38 @@ trait AuthenticationMiddleware {
   val dsl: Http4sDsl[AppTask] = Http4sDsl[AppTask]
   import dsl._
 
-  val authenticationHeaders = new AuthenticationHeaders[AppEnvironment] {}
+  val authenticationHeaders: AuthenticationHeaders[AppEnvironment] =
+    new AuthenticationHeaders[AppEnvironment] {}
 
-  def authUser: Kleisli[AppTask, Request[AppTask], Either[String, AuthToken]] = {
+  def authUser
+      : Kleisli[AppTask, Request[AppTask], Either[String, AuthToken]] = {
     Kleisli({ request =>
-      authenticationHeaders.getToken(request).map { e => {
-        e.left.map (_.toString)
-      }}
-    }
-    )
+      authenticationHeaders.getToken(request).map { e =>
+        {
+          e.left.map(_.toString)
+        }
+      }
+    })
   }
 
-  val onFailure: AuthedRoutes[String, AppTask] = Kleisli(req => OptionT.liftF {
-    Forbidden(req.authInfo)
-  })
+  val onFailure: AuthedRoutes[String, AppTask] = Kleisli(
+    req =>
+      OptionT.liftF {
+        Forbidden(req.authInfo)
+      }
+  )
 
-  val authenticationMiddleware: AuthMiddleware[AppTask, AuthToken] = AuthMiddleware(authUser, onFailure)
+  val authenticationMiddleware: AuthMiddleware[AppTask, AuthToken] =
+    AuthMiddleware(authUser, onFailure)
 }
 
 object AuthenticationHeaders {
-  def addAuthentication[Tsk[_]](request: Request[Tsk], username: String, password: String): Request[Tsk] =
-    request.withHeaders(request.headers.put(Header("Authorization", s"$username $password")))
+  def addAuthentication[Tsk[_]](
+      request: Request[Tsk],
+      username: String,
+      password: String
+  ): Request[Tsk] =
+    request.withHeaders(
+      request.headers.put(Header("Authorization", s"$username $password"))
+    )
 }

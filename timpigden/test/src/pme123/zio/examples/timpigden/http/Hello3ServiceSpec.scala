@@ -1,12 +1,12 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
-import org.http4s._
 import org.http4s.implicits._
-import pme123.zio.examples.timpigden.XmlEncoders._
+import org.http4s.{Method, Request}
+import pme123.zio.examples.timpigden.http.XmlEncoders.{parseIO, _}
 import zio.Task
 import zio.interop.catz._
-import zio.test.Assertion._
-import zio.test.{testM, _}
+import zio.test.Assertion.equalTo
+import zio.test.{DefaultRunnableSpec, assert, suite, testM}
 
 object Hello3ServiceSpec
     extends DefaultRunnableSpec(

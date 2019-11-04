@@ -1,8 +1,8 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import org.http4s.AuthedRoutes
 import org.http4s.dsl.Http4sDsl
-import pme123.zio.examples.timpigden.Authenticator.AuthToken
+import pme123.zio.examples.timpigden.http.Authenticator.AuthToken
 import zio.RIO
 import zio.interop.catz._
 

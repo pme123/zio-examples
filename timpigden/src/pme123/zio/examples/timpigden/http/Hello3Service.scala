@@ -1,12 +1,11 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import org.http4s.HttpRoutes
-import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
+import org.http4s.implicits._
+import pme123.zio.examples.timpigden.http.XmlEncoders._
 import zio.Task
 import zio.interop.catz._
-import XmlEncoders._
-import Person._
 
 object Hello3Service {
 

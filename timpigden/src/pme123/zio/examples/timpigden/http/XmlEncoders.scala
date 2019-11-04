@@ -1,18 +1,12 @@
-package pme123.zio.examples.timpigden
-
-import cats.Monad
-import cats.effect.Sync
-import org.http4s.{EntityDecoder, EntityEncoder, MediaType}
-import org.http4s.headers._
-import zio.{IO, Task}
-
-import scala.xml.{Node, PrettyPrinter, XML}
+package pme123.zio.examples.timpigden.http
 import cats.Monad
 import cats.effect.Sync
 import org.http4s.EntityDecoder.collectBinary
 import org.http4s.headers.`Content-Type`
-import org.http4s.{DecodeResult, DefaultCharset, Entity, EntityDecoder, EntityEncoder, Headers, InvalidMessageBodyFailure, MalformedMessageBodyFailure, MediaType}
+import org.http4s._
 import zio.{IO, Task}
+
+import scala.xml.{Node, PrettyPrinter, XML}
 
 
 object XmlEncoders {
@@ -65,7 +59,7 @@ object XmlEncoders {
       val age = (node \ "age").head.text.toInt
       Right(Person(name, age))
     } catch {
-      case e: Exception => Left("parse error in xml")
+      case e: Exception => Left(s"parse error in xml: $e")
     }
   }
 

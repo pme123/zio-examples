@@ -1,11 +1,11 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import org.http4s.server.blaze.BlazeServerBuilder
+import zio._
 import zio.interop.catz._
 import zio.interop.catz.implicits._
-import zio._
 
-object Hello1App extends App {
+object Hello3App extends App {
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
     program
@@ -19,8 +19,8 @@ object Hello1App extends App {
       .runtime[ZEnv]
       .flatMap { implicit env =>
         BlazeServerBuilder[Task]
-          .bindHttp(8088, "localhost")
-          .withHttpApp(Hello1Service.service)
+          .bindHttp(9009, "localhost")
+          .withHttpApp(Hello3Service.service)
           .serve
           .compile
           .drain

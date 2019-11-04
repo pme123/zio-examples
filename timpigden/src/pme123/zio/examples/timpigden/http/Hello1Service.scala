@@ -1,9 +1,9 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import cats.data.Kleisli
-import org.http4s.{HttpRoutes, Request, Response}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.implicits._
+import org.http4s.{HttpRoutes, Request, Response}
 import zio.Task
 import zio.interop.catz._
 

@@ -1,4 +1,4 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import org.http4s.implicits._
 import org.http4s.server.Router
@@ -8,13 +8,13 @@ import zio.clock.Clock
 import zio.console._
 import zio.interop.catz._
 
-object Hello2App extends App with AuthenticationMiddleware {
+object Hello4App extends App with AuthenticationMiddleware {
 
   type AppEnvironment = Authenticator with Clock
 
-  val hello2Service = new Hello2Service[AppEnvironment] {}
+  val hello4Service = new Hello4Service[AppEnvironment] {}
 
-  val authenticatedService = authenticationMiddleware(hello2Service.service)
+  val authenticatedService = authenticationMiddleware(hello4Service.service)
 
   val secApp = Router[AppTask](
     "" -> authenticatedService
@@ -24,7 +24,7 @@ object Hello2App extends App with AuthenticationMiddleware {
     .flatMap {
       implicit rts =>
         BlazeServerBuilder[AppTask]
-          .bindHttp(8088, "localhost")
+          .bindHttp(9009, "localhost")
           .withHttpApp(secApp)
           .serve
           .compile

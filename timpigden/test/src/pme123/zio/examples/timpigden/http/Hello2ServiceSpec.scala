@@ -1,8 +1,8 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import org.http4s._
 import org.http4s.implicits._
-import pme123.zio.examples.timpigden.Middlewares.{withMiddleware, _}
+import pme123.zio.examples.timpigden.http.Middlewares._
 import zio.interop.catz._
 import zio.test.Assertion._
 import zio.test.{testM, _}

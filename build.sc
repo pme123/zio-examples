@@ -14,7 +14,7 @@ trait MyModule extends ScalaModule {
     val sttp = "1.6.3"
     val zio = "1.0.0-RC16"
     val zioMacros = "0.4.0"
-    val zioCats = "2.0.0.0-RC6"
+    val zioCats = "2.0.0.0-RC7"
   }
 
   object libs {
@@ -99,13 +99,28 @@ object root extends MyModule {
 object macros extends MyModule {
 
   override def scalacOptions =
-     defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
+    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
 
   override def ivyDeps = {
     Agg(
       libs.zio,
       libs.zioMacrosAccess,
       libs.zioMacrosMockable
+    )
+  }
+}
+
+object timpigden extends MyModule {
+
+  override def ivyDeps = {
+    Agg(
+      libs.zio,
+      libs.zioCats,
+      libs.http4sBlazeClient,
+      libs.http4sBlazeServer,
+      libs.http4sDsl,
+      libs.scalaXml,
+      libs.cats
     )
   }
 }

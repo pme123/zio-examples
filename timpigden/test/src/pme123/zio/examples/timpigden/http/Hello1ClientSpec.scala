@@ -1,4 +1,4 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import zio.test._
 import zio.test.Assertion.{equalTo, _}

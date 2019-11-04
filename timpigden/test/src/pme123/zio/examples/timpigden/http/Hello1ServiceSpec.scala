@@ -1,4 +1,4 @@
-package pme123.zio.examples.timpigden
+package pme123.zio.examples.timpigden.http
 
 import org.http4s._
 import org.http4s.implicits._
