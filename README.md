@@ -6,6 +6,7 @@ I tried to rebuild some examples from different Blog Posts:
 * [Make your program testable](https://medium.com/@wiemzin/make-your-program-testable-cee543c6fbbf) by Wiem Zine
 * [Testing Incrementally with ZIO Environment](http://degoes.net/articles/testable-zio#introduce-a-database-module) by John A De Goes
 * [ZIO, Http4s, Auth, Codecs and zio-test](https://timpigden.github.io/_pages/zio-http4s/intro.html)
+* [Functional dependency injection in Scala using ZIO environments](https://blog.jdriven.com/2019/10/functional-dependency-injection-in-scala-using-zio-environments/)
 
 ## Buildtool Mill
 

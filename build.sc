@@ -9,7 +9,7 @@ trait MyModule extends ScalaModule {
     val circe = "0.12.1"
     val doobie = "0.8.0-RC1"
     val http4s = "0.21.0-M4"
-    val pureconfig = "0.11.1"
+    val pureconfig = "0.12.1"
     val scalaXml = "1.2.0"
     val sttp = "1.6.3"
     val zio = "1.0.0-RC16"
