@@ -7,6 +7,7 @@ import org.http4s.server.Router
 import zio.interop.catz._
 
 object Middlewares {
+
   val withMiddleware: AuthenticationMiddleware {
     type AppEnvironment = Authenticator
   } = new AuthenticationMiddleware {

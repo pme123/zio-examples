@@ -10,9 +10,11 @@ I tried to rebuild some examples from different Blog Posts:
 * `ghostdogpr` [Wrapping impure code with ZIO](https://medium.com/@ghostdogpr/wrapping-impure-code-with-zio-9265c219e2e) by Pierre Ricadat
 
 ## timpigden Module
-* `timpigden` [ZIO, Http4s, Auth, Codecs and zio-test](https://timpigden.github.io/_pages/zio-http4s/intro.html) by Tim Pigden
+by Tim Pigden
+* `http` [ZIO, Http4s, Auth, Codecs and zio-test](https://timpigden.github.io/_pages/zio-http4s/intro.html) 
+* `stream` [ZIO Streams using IoT Sensor Emulation](https://timpigden.github.io/_pages/zio-streams/intro.html) 
 
-## Buildtool Mill
+# Buildtool Mill
 
 ## Update dependencies in Intellij
 

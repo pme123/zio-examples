@@ -3,16 +3,17 @@ package pme123.zio.examples.timpigden.http
 import org.http4s._
 import org.http4s.implicits._
 import zio.interop.catz._
-import zio.test.Assertion._
-import zio.test.{testM, _}
+import zio.test.Assertion.equalTo
+import zio.test.{DefaultRunnableSpec, assertM, suite, testM, _}
 
 object Hello1ServiceSpec
     extends DefaultRunnableSpec(
       suite("Hello1ServiceSpec routes suites")(
         testM("root request returns ok") {
-          for {
+          val io = for {
             response <- Hello1Service.service.run(Request())
-          } yield assert(response.status, equalTo(Status.Ok))
+          } yield response.status
+          assertM(io, equalTo(Status.Ok))
         },
         testM("root request returns Ok, using assertM insteat") {
           assertM(

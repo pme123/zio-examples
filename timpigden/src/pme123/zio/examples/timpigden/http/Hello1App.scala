@@ -1,6 +1,7 @@
 package pme123.zio.examples.timpigden.http
 
 import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.implicits._
 import zio._
 import zio.interop.catz._
 import zio.interop.catz.implicits._
