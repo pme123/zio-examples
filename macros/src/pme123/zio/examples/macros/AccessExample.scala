@@ -1,7 +1,8 @@
 package pme123.zio.examples.macros
 
 import zio.ZIO
-import zio.macros.access.accessible
+import zio.macros.annotation.accessible
+
 @accessible
 trait AccessExample {
   val accessExample: AccessExample.Service[Any]

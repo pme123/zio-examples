@@ -1,12 +1,10 @@
 package pme123.zio.examples.macros
 
 import zio.{UIO, ZIO}
-import zio.macros.access.accessible
-import zio.macros.mock.mockable
 import zio.console.Console
+import zio.macros.annotation.accessible
 
 @accessible
-@mockable
 trait AccountObserver {
   val accountObserver: AccountObserver.Service[Any]
 }

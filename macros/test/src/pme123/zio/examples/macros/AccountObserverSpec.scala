@@ -1,14 +1,9 @@
 package pme123.zio.examples.macros
 
-import zio.ZIO
-import zio.console.Console
-import zio.test.Assertion._
-import zio.test._
-import zio.test.mock._
-
-object AccountObserverSpec
+object AccountObserverSpec {/*
     extends DefaultRunnableSpec(
       suite("processEvent") {
+
         val event = "MyAccessEvent"
         val app: ZIO[AccountObserver with MockConsole, Nothing, Unit] = AccountObserver.>.processEvent(event)
         val mockEnv: MockSpec[_, _, String] = (
@@ -29,4 +24,5 @@ object AccountObserverSpec
           assertM(result, isUnit)
         }
       }
-    )
+    )*/
+}

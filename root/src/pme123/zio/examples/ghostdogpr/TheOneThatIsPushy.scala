@@ -2,7 +2,6 @@ package pme123.zio.examples.ghostdogpr
 
 import zio._
 import zio.blocking.effectBlocking
-import zio.console.Console
 import zio.stream.ZStream
 
 import scala.util.Random

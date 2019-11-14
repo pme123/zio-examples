@@ -13,7 +13,7 @@ trait MyModule extends ScalaModule {
     val scalaXml = "1.2.0"
     val sttp = "1.6.3"
     val zio = "1.0.0-RC16"
-    val zioMacros = "0.4.0"
+    val zioMacros = "0.5.0"
     val zioCats = "2.0.0.0-RC7"
   }
 
@@ -37,8 +37,8 @@ trait MyModule extends ScalaModule {
       ivy"com.softwaremill.sttp::async-http-client-backend-zio:${version.sttp}"
     val sttpCirce = ivy"com.softwaremill.sttp::circe::${version.sttp}"
     val zio = ivy"dev.zio::zio:${version.zio}"
-    val zioMacrosAccess = ivy"dev.zio::zio-macros-access:${version.zioMacros}"
-    val zioMacrosMockable = ivy"dev.zio::zio-macros-mock:${version.zioMacros}"
+    val zioMacrosAccess = ivy"dev.zio::zio-macros-core:${version.zioMacros}"
+  //  val zioMacrosMockable = ivy"dev.zio::zio-macros-mock:${version.zioMacros}"
     val zioStream = ivy"dev.zio::zio-streams:${version.zio}"
     val zioCats = ivy"dev.zio::zio-interop-cats:${version.zioCats}"
   }
@@ -102,8 +102,8 @@ object macros extends MyModule {
   override def ivyDeps = {
     Agg(
       libs.zio,
-      libs.zioMacrosAccess,
-      libs.zioMacrosMockable
+      libs.zioMacrosAccess
+  //    libs.zioMacrosMockable
     )
   }
 }
