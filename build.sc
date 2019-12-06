@@ -41,7 +41,7 @@ trait MyModule extends ScalaModule {
     val sttpCirce = ivy"com.softwaremill.sttp::circe::${version.sttp}"
     val zio = ivy"dev.zio::zio:${version.zio}"
     val zioMacrosAccess = ivy"dev.zio::zio-macros-core:${version.zioMacros}"
-  //  val zioMacrosMockable = ivy"dev.zio::zio-macros-mock:${version.zioMacros}"
+    //  val zioMacrosMockable = ivy"dev.zio::zio-macros-mock:${version.zioMacros}"
     val zioStream = ivy"dev.zio::zio-streams:${version.zio}"
     val zioCats = ivy"dev.zio::zio-interop-cats:${version.zioCats}"
   }
@@ -64,13 +64,14 @@ trait MyModule extends ScalaModule {
     defaultScalaOpts
 
   val defaultScalaOpts = Seq(
-    "-deprecation",               // Emit warning and location for usages of deprecated APIs.
-    "-encoding", "UTF-8",         // Specify character encoding used by source files.
-    "-language:higherKinds",      // Allow higher-kinded types
-    "-language:postfixOps",       // Allows operator syntax in postfix position (deprecated since Scala 2.10)
-    "-feature"                    // Emit warning and location for usages of features that should be imported explicitly.
-  //  "-Ypartial-unification",      // Enable partial unification in type constructor inference
-  //  "-Xfatal-warnings"            // Fail the compilation if there are any warnings
+    "-deprecation", // Emit warning and location for usages of deprecated APIs.
+    "-encoding",
+    "UTF-8", // Specify character encoding used by source files.
+    "-language:higherKinds", // Allow higher-kinded types
+    "-language:postfixOps", // Allows operator syntax in postfix position (deprecated since Scala 2.10)
+    "-feature" // Emit warning and location for usages of features that should be imported explicitly.
+    //  "-Ypartial-unification",      // Enable partial unification in type constructor inference
+    //  "-Xfatal-warnings"            // Fail the compilation if there are any warnings
   )
 
 }
@@ -111,20 +112,6 @@ object macros extends MyModule {
   }
 }
 
-object yaml extends MyModule {
-
-  override def scalacOptions =
-    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
-
-  override def ivyDeps = {
-    Agg(
-      libs.zio,
-      libs.circeGeneric,
-      libs.circeYaml
-    )
-  }
-}
-
 object hocon extends MyModule {
 
   override def scalacOptions =
@@ -134,6 +121,21 @@ object hocon extends MyModule {
     Agg(
       libs.zio,
       libs.pureconfig
+    )
+  }
+}
+
+object yaml extends MyModule {
+  override def moduleDeps = Seq(hocon)
+
+  override def scalacOptions =
+    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
+
+  override def ivyDeps = {
+    Agg(
+      libs.zio,
+      libs.circeGeneric,
+      libs.circeYaml
     )
   }
 }

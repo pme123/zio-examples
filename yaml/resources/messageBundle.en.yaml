@@ -1,9 +1,13 @@
-language: German
-email.subject: Welcome Email from SuperComp AG.
-email.body: |
-  Dear {{gender}} {{name}}
+name: messageBundle
+language: en
 
-  We welcome you to be part of our community!
+params:
+  language: German
+  email-subject: Welcome Email from SuperComp AG.
+  email-body: |
+    Dear {{gender}} {{name}}
 
-  Regards
-    SuperComp AG
+    We welcome you to be part of our community!
+
+    Regards
+      SuperComp AG
