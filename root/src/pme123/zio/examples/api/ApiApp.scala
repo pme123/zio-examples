@@ -12,17 +12,18 @@ import zio.blocking.Blocking
 import zio.clock.Clock
 import zio.interop.catz._
 import zio._
-import zio.console._
+import zio.console.Console
+
 object ApiApp extends App {
 
-  type AppEnvironment = Clock with Persistence
+  type AppEnvironment = Clock with Console with Persistence
 
   type AppTask[A] = RIO[AppEnvironment, A]
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, Int] =
-    program.foldM(
-      err => putStrLn(s"Program failed: $err") *> ZIO.succeed(1),
-      _ => ZIO.succeed(0)
+    program.fold(
+      _ => 1,
+      _ => 0
     )
 
   private lazy val program: ZIO[ZEnv, Throwable, Unit] = for {
@@ -37,9 +38,11 @@ object ApiApp extends App {
     httpApp = Router[AppTask](
       "/users" -> Api().routes
     ).orNotFound
+
     _ <- MyConsole.>.println(
       s"The server runs on http://${conf.api.endpoint}:${conf.api.port}"
     ).provide(MyConsole.Live)
+
     server = ZIO.runtime[AppEnvironment].flatMap { implicit rts =>
       Persistence.>.createTable *>
         BlazeServerBuilder[AppTask]
@@ -52,7 +55,7 @@ object ApiApp extends App {
 
     program <- transactorR.use { transactor =>
       server.provideSome[ZEnv] { _ =>
-        new Clock.Live with Persistence.Live {
+        new Clock.Live with Persistence.Live with Console.Live {
           override protected def tnx: doobie.Transactor[Task] = transactor
         }
       }
