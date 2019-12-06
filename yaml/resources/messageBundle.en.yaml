@@ -1,6 +1,5 @@
-param.company: &company_name SuperComp AG
 language: German
-email.subject: *company_name Welcome Email from *company_name.
+email.subject: Welcome Email from SuperComp AG.
 email.body: |
   Dear {{gender}} {{name}}
 

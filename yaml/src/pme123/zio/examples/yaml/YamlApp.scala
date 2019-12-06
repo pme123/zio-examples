@@ -59,10 +59,10 @@ object YamlApp extends App {
     val yamlString = Source.fromResource(ref.url).mkString
     val json: Either[ParsingFailure, Json] = parser.parse(yamlString)
     for {
-      _ <- console.putStrLn(s"\nJSON:\n${json.toString}")
+      _ <- console.putStrLn(s"\nJSON:\n$json")
       comp = json.flatMap(_.as[T])
       component <- Task.fromEither(comp)
-      _ <- zio.console.putStrLn(s"\nComponent:\n${component.toString}")
+      _ <- zio.console.putStrLn(s"\nComponent:\n$component")
     } yield component
   }
 

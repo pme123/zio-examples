@@ -125,6 +125,19 @@ object yaml extends MyModule {
   }
 }
 
+object hocon extends MyModule {
+
+  override def scalacOptions =
+    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
+
+  override def ivyDeps = {
+    Agg(
+      libs.zio,
+      libs.pureconfig
+    )
+  }
+}
+
 object timpigden extends MyModule {
 
   override def ivyDeps = {
