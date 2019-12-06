@@ -1,0 +1,7 @@
+name: dbLookup
+dbConRef:
+  name: dbConnection
+statement: SELECT f_plz FROM t_places
+             WHERE f_name == ?
+params:
+  name: Schwändi

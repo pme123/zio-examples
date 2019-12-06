@@ -1,0 +1,10 @@
+param.company: &company_name SuperComp AG
+language: German
+email.subject: *company_name Welcome Email from *company_name.
+email.body: |
+  Dear {{gender}} {{name}}
+
+  We welcome you to be part of our community!
+
+  Regards
+    SuperComp AG

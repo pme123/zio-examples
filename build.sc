@@ -1,3 +1,4 @@
+import macros.defaultScalaOpts
 import mill._
 import mill.scalalib._
 
@@ -7,6 +8,7 @@ trait MyModule extends ScalaModule {
   object version {
     val cats = "2.0.0"
     val circe = "0.12.1"
+    val circeYaml = "0.12.0"
     val doobie = "0.8.0-RC1"
     val http4s = "0.21.0-M4"
     val pureconfig = "0.12.1"
@@ -21,6 +23,7 @@ trait MyModule extends ScalaModule {
     val cats = ivy"org.typelevel::cats-core:${version.cats}"
     val circeCore = ivy"io.circe::circe-core:${version.circe}"
     val circeGeneric = ivy"io.circe::circe-generic:${version.circe}"
+    val circeYaml = ivy"io.circe::circe-yaml:${version.circeYaml}"
     val doobieCore = ivy"org.tpolecat::doobie-core:${version.doobie}"
     val doobieH2 = ivy"org.tpolecat::doobie-h2:${version.doobie}"
     val http4sBlazeServer =
@@ -103,7 +106,21 @@ object macros extends MyModule {
     Agg(
       libs.zio,
       libs.zioMacrosAccess
-  //    libs.zioMacrosMockable
+      //    libs.zioMacrosMockable
+    )
+  }
+}
+
+object yaml extends MyModule {
+
+  override def scalacOptions =
+    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
+
+  override def ivyDeps = {
+    Agg(
+      libs.zio,
+      libs.circeGeneric,
+      libs.circeYaml
     )
   }
 }
