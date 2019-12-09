@@ -112,34 +112,6 @@ object macros extends MyModule {
   }
 }
 
-object hocon extends MyModule {
-
-  override def scalacOptions =
-    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
-
-  override def ivyDeps = {
-    Agg(
-      libs.zio,
-      libs.pureconfig
-    )
-  }
-}
-
-object yaml extends MyModule {
-  override def moduleDeps = Seq(hocon)
-
-  override def scalacOptions =
-    defaultScalaOpts ++ Seq("-Ymacro-annotations", "-Ymacro-debug-lite")
-
-  override def ivyDeps = {
-    Agg(
-      libs.zio,
-      libs.circeGeneric,
-      libs.circeYaml
-    )
-  }
-}
-
 object timpigden extends MyModule {
 
   override def ivyDeps = {
